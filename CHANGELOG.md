@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 (2026-11-22)
+
+- **Two strikes.** A job whose check failed gets at most one relaunch, briefed with the failure (expected and saw), its Owns and the approaches already tried; the same failure twice stops it and goes to the user. A merged job is never rerun. At a wave's close, the same check failing the same way twice reverts the job that broke it instead of a third fix.
+
 ## 1.0.0 (2026-11-22)
 
 - First release: the `fullburn` skill (Pro runs it lite, Ultra in full; tiers MAX, HIGH, STANDARD, LITE; plan, budget
