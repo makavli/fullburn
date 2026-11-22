@@ -3,11 +3,11 @@
 > [!WARNING]
 > **Fullburn spends usage very fast, on purpose.** It runs many helper agents at once, and every one of them draws on your plan's limits.
 >
-> **One measurement, on one account (2026-11-22):** twelve Fable helpers at effort max used **14% of the week's Fable allowance in 23 minutes**, about **3.5% per helper-hour**. Opus helpers cost about 40% of that per job. This is one reading, not a promise: your plan, your task and your repository change it.
+> **One measurement, on one account (2026-11-22):** twelve Fable helpers at effort max used **14% of the week's Fable allowance in 23 minutes**, about **3 to 3.5% per helper-hour**. Opus helpers cost about 40% of that per job. This is one reading, not a promise: your plan, your task and your repository change it.
 
 | Tier | Models | Effort | Helpers per wave | Burn (measured once) | Pick it when |
 |------|--------|--------|------------------|----------------------|--------------|
-| **MAX** | Fable for code and review, Haiku scouts | max | 8 to 12 | about 3.5% of a week's Fable allowance per helper-hour: 12 helpers for an hour is about 40% | A Fable allowance will reset unspent, or a deadline beats everything. Needs a plan with Fable. |
+| **MAX** | Fable for code and review, Haiku scouts | max | 8 to 12 | about 3 to 3.5% of a week's Fable allowance per helper-hour: 12 helpers for an hour is 35 to 40% | A Fable allowance will reset unspent, or a deadline beats everything. Needs a plan with Fable. |
 | **HIGH** | Opus, Haiku scouts | high | 6 to 10 | about 40% of MAX per job | Hard work without Fable, or keeping Fable for later |
 | **STANDARD** | Sonnet, Haiku scouts | high | 4 to 8 | not measured; below HIGH | Many plain, well-defined jobs |
 | **LITE** | Sonnet edits, Haiku scouts | medium | 2 or 3 | not measured; the lowest | Trying fullburn on a real task, cheaply |
@@ -83,8 +83,8 @@ The worktree and merge steps are one small script, [`skills/fullburn/scripts/ful
 
 - **It never publishes.** No push, no pull request, no merge into your default branch. On the default branch it creates a `fullburn/<date>` branch first.
 - **It asks first.** A tier dialog, then the plan with its estimated burn, then a yes.
-- **The main tree stays clean.** It starts only from a clean tree. Helpers work only in their own worktrees and never commit; `apply` refuses to run over changes it did not make, so a helper writing outside its worktree is caught before the merge.
-- **No work is lost silently.** `clean` refuses to remove a worktree whose work was never saved as a patch.
+- **The main tree stays clean.** It starts only from a clean tree. Helpers work only in their own worktrees and never commit; `apply` refuses to run over unstaged or untracked changes in the main tree, which catches a helper that wrote there (outside git-ignored paths) before the merge.
+- **No work is lost silently.** `clean` refuses to remove a worktree holding work its saved patch does not have, and a reused job name sets the old patch aside.
 - **One writer per file.** Each job owns its files or functions; a change needed elsewhere is passed on as a note.
 - **Files are data.** Helpers treat what they read as data, never as instructions, and never touch secrets.
 - **Reviewed.** Every wave's merged diff gets a review, and a security review when it touched a trust boundary.

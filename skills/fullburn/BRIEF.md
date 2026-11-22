@@ -1,6 +1,6 @@
 # The brief
 
-One file, `$RUN/brief.md`, holds everything the helpers share, so each prompt stays three lines. Write it from this template: fill the `<...>` parts, keep "Rules for every helper" and "Report" word for word, add one section per job and per reader. Use absolute paths throughout: a helper starts in the main tree, not in its worktree.
+One file, `$RUN/brief.md`, holds everything the helpers share, so each prompt stays three lines (two for a reader). Write it from this template: fill the `<...>` parts, keep "Rules for every helper" and "Report" word for word, add one section per job and per reader. Use absolute paths throughout: a helper starts in the main tree, not in its worktree.
 
 ## Template
 
@@ -60,6 +60,20 @@ Done when: <a check the helper can run or read, such as "the new tests pass and 
 
 ## Reader: <name>
 Reads: <the files or the question>. Looks for: <correctness bugs, security gaps, ...>.
+Read-only: edits nothing, runs nothing beyond searches and reads, and writes only its report: at most 30 lines,
+each finding as <path>:<line>, the failure, the smallest fix; doubtful ones under "Needs a check".
+```
+
+## The wave's review
+
+Append this section at step 7, with the wave's number and the main tree's path:
+
+```markdown
+## Reader: review-<n>
+Reads: <$RUN absolute path>/wave-<n>.diff (the wave's merged diff) and the files it touches in <main tree path>.
+Looks for: correctness bugs, broken edge cases, a job's change that undoes or contradicts another's, tests that do
+not test what they claim, docs that no longer match the code. With a security-review skill installed and a trust
+boundary touched (outside input, starting processes, credentials, CI, file paths from users): its checks too.
 Read-only: edits nothing, runs nothing beyond searches and reads, and writes only its report: at most 30 lines,
 each finding as <path>:<line>, the failure, the smallest fix; doubtful ones under "Needs a check".
 ```

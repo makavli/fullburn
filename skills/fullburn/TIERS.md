@@ -6,7 +6,7 @@ One AskUserQuestion, header "Tier", these four options in this order. Mark one "
 
 | Label | Description |
 |-------|-------------|
-| MAX: Fable at max | Fastest and costliest. Measured once: about 3.5% of a week's Fable allowance per helper-hour; 12 helpers for an hour is about 40%. Needs a plan with Fable. |
+| MAX: Fable at max | Fastest and costliest. Measured once: about 3 to 3.5% of a week's Fable allowance per helper-hour; 12 helpers for an hour is 35 to 40%. Needs a plan with Fable. |
 | HIGH: Opus | About 40% of what a job costs at MAX, measured once. Up to 10 helpers. |
 | STANDARD: Sonnet | Cheaper again; not measured, so the 20-minute reading sets its rate. Up to 8 helpers. |
 | LITE: Haiku and Sonnet | 2 or 3 helpers: the cheap way to try fullburn on a real task. |
@@ -30,7 +30,7 @@ Burn ≈ helpers × hours each helper runs × rate. A helper runs until its job 
 
 | Tier | Rate |
 |------|------|
-| MAX | about 3.5% of a week's Fable allowance per helper-hour |
+| MAX | 3.5% of a week's Fable allowance per helper-hour (the cautious end of about 3 to 3.5%) |
 | HIGH | about 0.4 × the MAX figure for the same jobs |
 | STANDARD, LITE | not measured: give the helper-hours, and say the 20-minute reading sets the rate |
 

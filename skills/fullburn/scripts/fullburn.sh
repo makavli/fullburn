@@ -23,12 +23,15 @@ job_name() {
 wt_path() { echo "$(dirname "$root")/$(basename "$root")_wt_$1"; }
 # Paths with unstaged edits or untracked files, outside .fullburn/ (excluded).
 loose() { git -C "$root" status --porcelain --untracked-files=all | grep -E '^(.[^ ]|\?\?)' || true; }
+# Hash of a worktree's whole diff against its base, new files included: what clean compares with the last patch.
+work_hash() { git -C "$1" add -A -N . && git -C "$1" diff --binary "$2" | git hash-object --stdin; }
 
 cmd=${1:-}; shift || true
 case "$cmd" in
   init)
     [ -z "$(git -C "$root" status --porcelain --untracked-files=all)" ] \
       || die "the tree is not clean: commit or stash first (merging stages every change)"
+    git -C "$root" rev-parse --verify -q HEAD > /dev/null || die "the repository has no commit yet: commit something first"
     exclude=$(git -C "$root" rev-parse --git-path info/exclude)
     case "$exclude" in /*|?:*) ;; *) exclude="$root/$exclude" ;; esac
     mkdir -p "$(dirname "$exclude")"
@@ -43,6 +46,8 @@ case "$cmd" in
     job_name "${1:-}"; wt=$(wt_path "$1")
     [ -d "$run" ] || die "run init first"
     [ ! -e "$wt" ] || die "already exists: $wt"
+    old="$run/patches/$1.patch"  # a reused job name: set the last patch aside, so it is never applied or trusted as this job's
+    if [ -f "$old" ]; then mv "$old" "$old.$(date +%Y%m%d%H%M%S)"; fi
     GIT_LFS_SKIP_SMUDGE=1 git -C "$root" worktree add -q -b "wt/$1" "$wt" HEAD
     # --worktree is the point: without it this lands in the shared config and stops the main tree's LFS fetches.
     git -C "$wt" config --worktree lfs.fetchexclude '*'
@@ -58,6 +63,7 @@ case "$cmd" in
     out="$run/patches/$job.patch"
     # Against the base commit, so a helper's stray commit or staged edit is still included.
     git -C "$wt" diff --binary "$base" -- . "$@" > "$out"
+    git -C "$wt" config --worktree fullburn.patched "$(work_hash "$wt" "$base")"
     if [ -s "$out" ]; then git -C "$wt" diff --stat "$base" -- . "$@"; else echo "empty: $job changed nothing"; fi
     echo "$out"
     ;;
@@ -66,7 +72,7 @@ case "$cmd" in
     job_name "${1:-}"; p="$run/patches/$1.patch"
     [ -f "$p" ] || die "no patch: $p (run patch first)"
     [ -s "$p" ] || { echo "empty patch, nothing to apply: $1"; exit 0; }
-    if git -C "$root" ls-files -u | grep -q .; then
+    if [ -n "$(git -C "$root" ls-files -u)" ]; then
       die "unresolved conflicts: fix the markers, then git add those files: $(git -C "$root" diff --name-only --diff-filter=U | tr '\n' ' ')"
     fi
     l=$(loose)
@@ -87,10 +93,12 @@ case "$cmd" in
   clean)
     job_name "${1:-}"; job=$1; force=${2:-}; wt=$(wt_path "$job")
     if [ -d "$wt" ]; then
-      if [ "$force" != "--force" ] && [ ! -f "$run/patches/$job.patch" ]; then
+      if [ "$force" != "--force" ]; then
         base=$(git -C "$wt" config --worktree fullburn.base 2>/dev/null || echo HEAD)
-        if [ -n "$(git -C "$wt" status --porcelain)" ] || [ "$(git -C "$wt" rev-parse HEAD)" != "$(git -C "$wt" rev-parse "$base")" ]; then
-          die "$wt holds work and no patch was saved: run patch $job first, or clean $job --force to discard it"
+        now=$(work_hash "$wt" "$base")
+        saved=$(git -C "$wt" config --worktree fullburn.patched 2>/dev/null || true)
+        if [ "$now" != "$(git hash-object --stdin < /dev/null)" ] && [ "$now" != "$saved" ]; then
+          die "$wt holds work its patch does not have: run patch $job first, or clean $job --force to discard it"
         fi
       fi
       git -C "$root" worktree remove --force "$wt"
