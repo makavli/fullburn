@@ -27,7 +27,7 @@ Done when `init` has printed the run folder, or you resumed.
 
 1. `$WATCH plan` prints `pro` or `ultra`. If it prints nothing, ask as the usage watch's step 1 says (Pro or Ultra; Max is not supported) and record the answer.
 2. **Pro runs fullburn lite**: the LITE tier only, since Pro has no Fable and its limits fit two or three cheap helpers. **Ultra runs fullburn full**: any of the four tiers of [TIERS.md](TIERS.md).
-3. One AskUserQuestion. On Ultra, two questions: the tier (the four tiers as options, each with its cost in its description) and the budget (how much of what is left before the reset this run may spend: all of it, about half, about a quarter). On Pro, the budget question only, after one line saying the run is LITE. MAX needs Fable: if the model list has no Fable, or the first Fable helper fails on its model, offer HIGH and show the plan again for a new go.
+3. One AskUserQuestion, for what the user has not already said: a tier or a budget named in the request counts as answered, and with both named there is no question. On Ultra, two questions: the tier (the four tiers as options, each with its cost in its description) and the budget (how much of what is left before the reset this run may spend: all of it, about half, about a quarter). On Pro, the budget question only, after one line saying the run is LITE. MAX needs Fable: if the model list has no Fable, or the first Fable helper fails on its model, offer HIGH and show the plan again for a new go.
 
 Done when the user has answered.
 
