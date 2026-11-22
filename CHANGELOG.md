@@ -2,6 +2,11 @@
 
 ## 1.0.0 (2026-11-22)
 
-- First release: the `fullburn` skill (tiers MAX, HIGH, STANDARD, LITE; plan and yes before launch; one brief; one
-  worktree per job; budget control; 3-way merge; one check, review and local commit per wave; a state file to resume).
-- `scripts/fullburn.sh`: `init`, `add`, `patch`, `apply`, `clean`, with its self-test.
+- First release: the `fullburn` skill (Pro runs it lite, Ultra in full; tiers MAX, HIGH, STANDARD, LITE; plan, budget
+  and yes before launch, asked again on resume; one brief; one worktree per job; budget control; 3-way merge with
+  each patch checked against the job's files; one check, review and local commit per wave; a state file to resume).
+- The `usage-watch` skill: asks the plan once (Pro or Ultra), logs the helpers, turns /usage readings into estimates
+  every 20 minutes while helpers run, refits its rates from each reading, and warns before a bar caps.
+- `scripts/fullburn.sh`: `init`, `add`, `patch`, `apply`, `clean`, safe under the user's own git and diff settings,
+  refusing submodules, nested repositories, stale or repeated patches and unapplied work; with its self-test.
+- `scripts/usage-watch.sh`: `plan`, `start`, `stop`, `reading`, `estimate`, `rates`, with its self-test.

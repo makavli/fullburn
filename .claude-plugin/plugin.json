@@ -1,7 +1,7 @@
 {
   "name": "fullburn",
   "version": "1.0.0",
-  "description": "A swarm for Claude Code: many helper agents at once, each in its own git worktree, merged and checked in waves. Spends usage very fast, on purpose.",
+  "description": "A swarm for Claude Code: many helper agents at once, each in its own git worktree, merged and checked in waves, with a usage watch for Pro and Ultra plans. Spends usage very fast, on purpose.",
   "author": {
     "name": "makavli",
     "url": "https://github.com/makavli"
@@ -9,5 +9,5 @@
   "homepage": "https://github.com/makavli/fullburn",
   "repository": "https://github.com/makavli/fullburn",
   "license": "MIT",
-  "keywords": ["swarm", "parallel", "agents", "subagents", "worktrees", "deadline"]
+  "keywords": ["swarm", "parallel", "agents", "subagents", "worktrees", "deadline", "usage"]
 }

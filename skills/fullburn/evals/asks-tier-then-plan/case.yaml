@@ -1,7 +1,8 @@
 schema_version: "1.1"
 name: asks-tier-then-plan
 expected_outcome: |
-  The skill checks the tree is clean, asks for a tier in one question with the four tiers and their costs, and
+  The skill checks the tree is clean, takes the plan (Ultra) from the prompt, asks for a tier in one question with
+  the four tiers and their costs, and
   launches no helper agent: nothing starts before a tier is picked, a plan is shown and the user says yes.
 context:
   scaffold_script: place-files.sh

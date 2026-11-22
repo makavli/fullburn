@@ -4,4 +4,4 @@ focus: trace
 weight: 1
 ---
 
-Applying the second patch with fullburn.sh apply conflicts, and the orchestrator resolves it so that test/text.test.js imports and tests both slugify and titleCase.
+After both patches are applied with fullburn.sh apply, test/text.test.js imports and tests both slugify and titleCase. When the second apply conflicts, the orchestrator resolved it keeping both; a clean second apply also passes.

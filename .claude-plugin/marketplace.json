@@ -9,7 +9,7 @@
   "plugins": [
     {
       "name": "fullburn",
-      "description": "Many helper agents at once, each in its own git worktree, merged and checked in waves. Spends usage very fast, on purpose.",
+      "description": "Many helper agents at once, each in its own git worktree, merged and checked in waves, with a usage watch. Spends usage very fast, on purpose.",
       "source": "./",
       "category": "productivity"
     }
