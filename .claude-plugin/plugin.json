@@ -1,6 +1,6 @@
 {
   "name": "fullburn",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A swarm for Claude Code: many helper agents at once, each in its own git worktree, merged and checked in waves, with a usage watch for Pro and Ultra plans. Spends usage very fast, on purpose.",
   "author": {
     "name": "makavli",
