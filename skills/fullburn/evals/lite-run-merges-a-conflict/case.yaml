@@ -1,0 +1,9 @@
+schema_version: "1.1"
+name: lite-run-merges-a-conflict
+expected_outcome: |
+  Two Sonnet helpers run at once, each in its own worktree from fullburn.sh add, and each writes a report under
+  .fullburn/reports. Both edit test/text.test.js, so the 3-way apply of the second patch usually conflicts; the
+  orchestrator resolves it keeping both functions. node --test passes, one local commit holds the
+  wave, a review helper read the merged diff, the worktrees and wt/ branches are removed, and nothing is pushed.
+context:
+  scaffold_script: place-files.sh

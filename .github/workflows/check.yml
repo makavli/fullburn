@@ -1,0 +1,32 @@
+name: check
+
+# The same check as `bash tests/check.sh`, on Linux and Windows (Git Bash), for every pull request and push to main.
+# It runs only while the repository is public, where Actions minutes are free; a private copy spends none.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: check-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  check:
+    if: ${{ !github.event.repository.private }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Check
+        shell: bash
+        run: bash tests/check.sh

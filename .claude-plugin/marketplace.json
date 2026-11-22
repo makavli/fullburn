@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "fullburn",
+  "description": "Fullburn: a swarm of helper agents in git worktrees, for when speed matters more than usage.",
+  "owner": {
+    "name": "makavli",
+    "url": "https://github.com/makavli"
+  },
+  "plugins": [
+    {
+      "name": "fullburn",
+      "description": "Many helper agents at once, each in its own git worktree, merged and checked in waves, with a usage watch. Spends usage very fast, on purpose.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
