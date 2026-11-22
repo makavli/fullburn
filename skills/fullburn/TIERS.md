@@ -2,7 +2,7 @@
 
 ## The dialog
 
-One AskUserQuestion, header "Tier", these four options in this order. Mark one "(Recommended)" only when the case is clear: LITE on a first run in this repository (no commit matches `git log --grep '^fullburn wave' -1`); MAX when the user wants a Fable allowance spent before it resets; otherwise none.
+One AskUserQuestion, header "Tier", these four options in this order. Picking one also covers at most two Haiku scouts that map a large repository before the plan; nothing else starts before the go. Mark one "(Recommended)" only when the case is clear: LITE on a first run in this repository (no commit matches `git log --grep '^fullburn wave' -1`); MAX when the user wants a Fable allowance spent before it resets; otherwise none.
 
 | Label | Description |
 |-------|-------------|

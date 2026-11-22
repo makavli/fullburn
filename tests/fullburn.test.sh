@@ -77,6 +77,10 @@ echo three > "$wd/e.txt"
 check "a reused job name sets its old patch aside" "[ ! -f .fullburn/patches/delta.patch ] && ls .fullburn/patches/delta.patch.* >/dev/null 2>&1"
 check "clean refuses the reused job's unsaved work" "! fbr clean delta >/dev/null 2>&1"
 fbr clean delta --force >/dev/null
+we=$(fbr add epsilon)
+git -C "$we" config --worktree --unset fullburn.base
+check "clean refuses a worktree with no recorded base" "! fbr clean epsilon >/dev/null 2>&1"
+fbr clean epsilon --force >/dev/null
 check "clean alpha and beta" "fbr clean alpha >/dev/null && fbr clean beta >/dev/null"
 check "worktrees and branches removed" "[ ! -d \"$wa\" ] && [ ! -d \"$wb\" ] && [ -z \"\$(git branch --list 'wt/*')\" ] && [ \"\$(git worktree list | wc -l | tr -d ' ')\" = 1 ]"
 check "main tree clean after the wave" "[ -z \"\$(git status --porcelain)\" ]"

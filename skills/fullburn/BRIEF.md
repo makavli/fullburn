@@ -41,7 +41,7 @@ Write it to the report path your prompt names, at most 30 lines, in this shape:
     - <path>:<line>: <what, in one line>
     Checks before: `<command>`: <result>
     Checks after: `<command>`: <result>
-    Orchestrator steps (exact commands for the main tree after the merge, or "none"):
+    Orchestrator steps (exact commands this repository defines, for the main tree after the merge, or "none"):
     - `<command>`
     Notes for other jobs: <file owned by another job, and the change it needs>, or "none"
     Left or doubtful:

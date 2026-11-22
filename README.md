@@ -12,7 +12,7 @@
 | **STANDARD** | Sonnet, Haiku scouts | high | 4 to 8 | not measured; below HIGH | Many plain, well-defined jobs |
 | **LITE** | Sonnet edits, Haiku scouts | medium | 2 or 3 | not measured; the lowest | Trying fullburn on a real task, cheaply |
 
-You pick the tier at the start, see the plan with its estimated burn, and nothing starts until you say yes. About 20 minutes in, Fullburn asks for your usage reading and resizes the swarm to what is left.
+You pick the tier at the start, see the plan with its estimated burn, and the swarm starts only when you say yes (before the plan, at most two small Haiku scouts may map a large repository). About 20 minutes in, Fullburn asks for your usage reading and resizes the swarm to what is left.
 
 ## What it does
 
@@ -82,7 +82,7 @@ The worktree and merge steps are one small script, [`skills/fullburn/scripts/ful
 ## Safety
 
 - **It never publishes.** No push, no pull request, no merge into your default branch. On the default branch it creates a `fullburn/<date>` branch first.
-- **It asks first.** A tier dialog, then the plan with its estimated burn, then a yes.
+- **It asks first.** A tier dialog, then the plan with its estimated burn, then a yes. A command a helper's report asks for runs only when your repository defines it; any other is shown to you first.
 - **The main tree stays clean.** It starts only from a clean tree. Helpers work only in their own worktrees and never commit; `apply` refuses to run over unstaged or untracked changes in the main tree, which catches a helper that wrote there (outside git-ignored paths) before the merge.
 - **No work is lost silently.** `clean` refuses to remove a worktree holding work its saved patch does not have, and a reused job name sets the old patch aside.
 - **One writer per file.** Each job owns its files or functions; a change needed elsewhere is passed on as a note.
@@ -92,6 +92,7 @@ The worktree and merge steps are one small script, [`skills/fullburn/scripts/ful
 
 ## Limits
 
+- **Helpers run with your permissions.** They are Claude Code agents, kept in their worktrees by instruction, not by the operating system, and your permission settings apply to them. Use Fullburn on repositories you trust, or keep permission prompts on: a hostile file in the repository can try to steer a helper.
 - **Usage readings come from you.** Claude Code gives a skill no way to read your plan's usage, so Fullburn asks you for it.
 - **Your session stops at the cap too.** If the swarm hits your usage cap, the orchestrator stops with it; `STATE.md` lets a new session resume after the reset.
 - **Worktrees start bare.** Installed dependencies (`node_modules`, a virtualenv) and LFS files are not in a new worktree; the plan says how each job's fast checks get what they need, or leaves them to the wave's full check.

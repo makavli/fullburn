@@ -94,7 +94,8 @@ case "$cmd" in
     job_name "${1:-}"; job=$1; force=${2:-}; wt=$(wt_path "$job")
     if [ -d "$wt" ]; then
       if [ "$force" != "--force" ]; then
-        base=$(git -C "$wt" config --worktree fullburn.base 2>/dev/null || echo HEAD)
+        base=$(git -C "$wt" config --worktree fullburn.base 2>/dev/null) \
+          || die "no base recorded in $wt, so its work cannot be checked: clean $1 --force removes it anyway"
         now=$(work_hash "$wt" "$base")
         saved=$(git -C "$wt" config --worktree fullburn.patched 2>/dev/null || true)
         if [ "$now" != "$(git hash-object --stdin < /dev/null)" ] && [ "$now" != "$saved" ]; then
