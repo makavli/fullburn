@@ -38,6 +38,8 @@ As a plugin, in Claude Code:
 /plugin install fullburn@fullburn
 ```
 
+Fullburn is also listed in [Fewkit](https://github.com/makavli/fewkit), pinned to a release. Use one marketplace, not both: the same plugin from two marketplaces installs twice.
+
 Or as a plain copy into your skills folder (`~/.claude/skills/` for every project, or `.claude/skills/` in one repository):
 
 ```bash

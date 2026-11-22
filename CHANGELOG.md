@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- The evals keep usage-watch's state inside their test repository (their scaffold writes a project
+  `.claude/settings.json` that sets `USAGE_WATCH_HOME`), so a run never writes to the real `~/.claude/usage-watch`.
+- README: Fullburn is also listed in Fewkit; one marketplace, not both.
+
 ## 1.1.0 (2026-11-22)
 
 - **Two strikes.** A job whose check failed gets at most one relaunch, briefed with the failure (expected and saw), its Owns and the approaches already tried; the same failure twice stops it and goes to the user. A merged job is never rerun. At a wave's close, the same check failing the same way twice reverts the job that broke it instead of a third fix.
