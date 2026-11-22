@@ -19,8 +19,11 @@ check "no plan prints nothing" "[ -z \"\$(at 0 plan)\" ]"
 check "Max is refused" "! at 0 plan max >/dev/null 2>&1"
 check "a reading needs the plan" "! at 0 reading weekly=10 >/dev/null 2>&1"
 check "Ultra is recorded with its seeds" "[ \"\$(at 0 plan ultra)\" = ultra ] && [ \"\$(at 0 plan)\" = ultra ] && grep -qx 'weekly 0.7 1' \"$tmp/state/scale-ultra\""
+# shellcheck disable=SC2034  # read inside check's eval; awk -v would read this backslash as an escape
+bs="$tmp\\bs"
+check "a backslash in the state path" "USAGE_WATCH_HOME=\"\$bs\" bash \"$uw\" plan ultra >/dev/null && [ -n \"\$(USAGE_WATCH_HOME=\"\$bs\" bash \"$uw\" rates)\" ]"
 check "a bad model is refused" "! at 0 start alpha gpt >/dev/null 2>&1"
-check "a bad reading is refused" "! at 0 reading weekly=abc >/dev/null 2>&1 && ! at 0 reading weekly=140 >/dev/null 2>&1"
+check "a bad reading is refused" "! at 0 reading weekly=abc >/dev/null 2>&1 && ! at 0 reading weekly=140 >/dev/null 2>&1 && ! at 0 reading weekly=100.9 >/dev/null 2>&1"
 
 at 0 start alpha fable && at 0 start beta opus
 check "a helper cannot start twice" "! at 0 start alpha fable >/dev/null 2>&1"

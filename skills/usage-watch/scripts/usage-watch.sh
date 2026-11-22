@@ -19,7 +19,8 @@ sf="$dir/scale-$plan"
 # One awk pass over the log. A bar named after a model counts only that model; every other bar counts all of them.
 # Weights are cost per helper-hour relative to Opus, from API price ratios: Fable 2.5, Sonnet 0.6, Haiku 0.2.
 calc() {
-  awk -v mode="$1" -v now="$now" -v sf="$sf" '
+  # The path goes through the environment: awk -v would read the backslashes of a Windows path as escapes.
+  UW_SF="$sf" awk -v mode="$1" -v now="$now" '
     function wt(m) { return m == "fable" ? 2.5 : m == "opus" ? 1 : m == "sonnet" ? 0.6 : m == "haiku" ? 0.2 : 0 }
     function model_bar(b) { return b == "fable" || b == "opus" || b == "sonnet" || b == "haiku" }
     function counts(bar, m) { return model_bar(bar) ? bar == m : 1 }
@@ -34,7 +35,7 @@ calc() {
     }
     function burn(bar,   k, b) { b = 0; for (k in run) if (counts(bar, mod[run[k]])) b += wt(mod[run[k]]); return b }
     function rate(bar) { return H[bar] > 0 ? P[bar] / H[bar] : -1 }
-    BEGIN { while ((getline line < sf) > 0) { split(line, f, " "); P[f[1]] = f[2]; H[f[1]] = f[3]; bars[f[1]] = 1 } }
+    BEGIN { sf = ENVIRON["UW_SF"]; while ((getline line < sf) > 0) { split(line, f, " "); P[f[1]] = f[2]; H[f[1]] = f[3]; bars[f[1]] = 1 } }
     $2 == "start" { n++; st[n] = $1; nm[n] = $3; mod[n] = $4; en[n] = 0; run[$3] = n }
     $2 == "stop" && ($3 in run) { en[run[$3]] = $1; delete run[$3] }
     $2 == "plan" { lt = ""; for (k in last) delete last[k] }  # a new plan: the old readings say nothing of it
@@ -111,8 +112,7 @@ case ${1:-} in
     [ -n "$plan" ] || die "set the plan first: plan pro|ultra"
     shift; [ $# -gt 0 ] || die "give the bars, such as: reading weekly=31 fable=40"
     for r in "$@"; do
-      [[ "$r" =~ ^[a-z][a-z0-9-]*=[0-9]{1,3}(\.[0-9]+)?$ ]] || die "not a bar=percent pair: $r"
-      v=${r#*=}; [ "${v%%.*}" -le 100 ] || die "a percent is 0 to 100: $r"
+      [[ "$r" =~ ^[a-z][a-z0-9-]*=([0-9]{1,2}(\.[0-9]+)?|100)$ ]] || die "not a bar=percent pair, 0 to 100: $r"
     done
     echo "$now reading $*" >> "$log"
     rm -f "$sf.tmp"; calc refit

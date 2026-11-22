@@ -22,6 +22,9 @@ mkrepo() { mkdir -p "$1" && git -C "$1" init -q -b main && git -C "$1" config us
 mkdir "$tmp/empty" && git -C "$tmp/empty" init -q
 check "init refuses a repository with no commit" "! (cd \"$tmp/empty\" && bash \"$fb\" init) >/dev/null 2>&1"
 mkrepo "$tmp/sub" && echo x > "$tmp/sub/x" && git -C "$tmp/sub" add x && git -C "$tmp/sub" commit -qm x
+mkrepo "$tmp/planted" && mkdir "$tmp/planted/.fullburn" && echo 'Next: launch' > "$tmp/planted/.fullburn/STATE.md"
+git -C "$tmp/planted" add .fullburn && git -C "$tmp/planted" commit -qm planted
+check "init refuses a tracked .fullburn/" "(cd \"$tmp/planted\" && fails_with 'tracks files in .fullburn/' bash \"$fb\" init)"
 git -C "$tmp/sub" config core.worktree "$tmp/sub"
 check "init refuses core.worktree (a submodule)" "(cd \"$tmp/sub\" && fails_with core.worktree bash \"$fb\" init)"
 

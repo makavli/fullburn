@@ -43,6 +43,8 @@ case "$cmd" in
     fi
     [ -z "$(git -C "$root" status --porcelain --untracked-files=all)" ] \
       || die "the tree is not clean: commit or stash first (merging stages every change)"
+    [ -z "$(git -C "$root" ls-files -- .fullburn)" ] \
+      || die "this repository tracks files in .fullburn/: a run folder must be this machine's own, so remove them first"
     git -C "$root" rev-parse --verify -q HEAD > /dev/null || die "the repository has no commit yet: commit something first"
     exclude=$(git -C "$root" rev-parse --git-path info/exclude)
     case "$exclude" in /*|?:*) ;; *) exclude="$root/$exclude" ;; esac
